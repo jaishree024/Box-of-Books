@@ -23,6 +23,11 @@ const Navbar = () => {
   const handleSearch = () => {
     navigate(`/?${filterType}=${encodeURIComponent(search)}`);
   };
+  const handleResetFilters = () => {
+    setSearch("");
+    setFilterType("title");
+    navigate("/");
+  };
 
   return (
     <nav
@@ -77,6 +82,13 @@ const Navbar = () => {
 
           <button style={{ cursor: "pointer" }} onClick={handleSearch}>
             Search
+          </button>
+
+          <button
+            style={{ cursor: "pointer", fontSize: "12px", padding: "4px 8px" }}
+            onClick={handleResetFilters}
+          >
+            Reset
           </button>
         </div>
       )}
