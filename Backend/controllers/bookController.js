@@ -4,20 +4,19 @@ const publicBookService = require("../services/publicBookService");
 const getBooks = async (req, res) => {
   try {
     const { title, genre, author } = req.query;
-
     const filter = { status: "active" };
 
-    if (title) {
-      filter.title = new RegExp(title, "i");
+    if (title?.trim()) {
+      filter.title = new RegExp(title.trim(), "i");
     }
 
-    if (genre) {
-      filter.genre = genre;
+    if (genre?.trim()) {
+      filter.genre = { $regex: genre.trim(), $options: "i" };
     }
 
-    if (author) {
+    if (author?.trim()) {
       const authors = await User.find({
-        name: { $regex: author, $options: "i" },
+        name: { $regex: author.trim(), $options: "i" },
         role: "AUTHOR",
       }).select("_id");
 
@@ -27,6 +26,7 @@ const getBooks = async (req, res) => {
 
       filter.author = { $in: authors.map((a) => a._id) };
     }
+    console.log("FILTER:", filter);
 
     const books = await publicBookService.getPublicBooks(filter);
 
