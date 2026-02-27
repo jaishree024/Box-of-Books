@@ -22,4 +22,11 @@ app.use("/api/books", require("./routes/bookRoutes"));
 app.use("/api/author", require("./routes/authorRoutes"));
 app.use("/api/admin", require("./routes/adminRoutes"));
 
+if (process.env.NODE_ENV !== "production") {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
+
 module.exports = app;
