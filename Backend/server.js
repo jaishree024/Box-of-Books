@@ -17,6 +17,10 @@ app.use(
 
 app.use(express.json());
 
+app.get("/api", (req, res) => {
+  res.json({ ok: true, message: "Backend is running" });
+});
+
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/books", require("./routes/bookRoutes"));
 app.use("/api/author", require("./routes/authorRoutes"));
