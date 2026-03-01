@@ -4,13 +4,18 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 
 dotenv.config();
-connectDB();
+connectDB().catch((error) => {
+  console.error("DB init failed:", error.message);
+});
 
 const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "box-of-books-frontend.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://box-of-books-frontend.vercel.app",
+    ],
     credentials: true,
   })
 );
