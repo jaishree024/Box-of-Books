@@ -10,7 +10,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://boxofbooks.vercel.app"],
+    origin: ["http://localhost:5173", "box-of-books-frontend.vercel.app"],
     credentials: true,
   })
 );
