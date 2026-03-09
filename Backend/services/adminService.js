@@ -1,8 +1,23 @@
 const User = require("../models/userModel");
 const Book = require("../models/booksModel");
 
-const getAuthorsService = async (filter) => {
-  return User.find(filter).select("-password");
+const getAuthorsService = async ({ filter, page, pageSize }) => {
+  const skip = (page - 1) * pageSize;
+
+  const [authors, totalItems] = await Promise.all([
+    User.find(filter).select("-password").sort({ createdAt: -1 }).skip(skip).limit(pageSize),
+    User.countDocuments(filter),
+  ]);
+
+  return {
+    authors,
+    pagination: {
+      page,
+      pageSize,
+      totalItems,
+      totalPages: Math.max(1, Math.ceil(totalItems / pageSize)),
+    },
+  };
 };
 
 const approveAuthorByIdService = async (authorId) => {

@@ -1,8 +1,12 @@
 import API from "./auth";
 
-export const getAuthors = (status) =>
+export const getAuthors = ({ status, page, pageSize }) =>
   API.get("/admin/authors", {
-    params: status ? { status } : {},
+    params: {
+      ...(status ? { status } : {}),
+      page,
+      pageSize,
+    },
   });
 
 export const approveAuthor = (id) => API.put(`/admin/authors/${id}/approve`);

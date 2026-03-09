@@ -1,18 +1,18 @@
 const AuthorRow = ({
+  srNo,
   author,
   onApprove,
   onReject,
   onDelete,
-  showApprovalActions,
 }) => {
   return (
     <tr>
+      <td>{srNo}</td>
       <td>{author.name}</td>
       <td>{author.email}</td>
-      <td>{author.status}</td>
 
       <td>
-        {showApprovalActions && (
+        {author.status === "pending" && (
           <>
             <button onClick={() => onApprove(author._id)}>Approve</button>
             <button onClick={() => onReject(author._id)}>Reject</button>
