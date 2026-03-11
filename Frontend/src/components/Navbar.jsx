@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api/auth";
 import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -20,14 +20,19 @@ const Navbar = () => {
     delete API.defaults.headers.Authorization;
     navigate("/", { replace: true });
   };
-  const handleSearch = () => {
-    navigate(`/?${filterType}=${encodeURIComponent(search)}`);
-  };
-  const handleResetFilters = () => {
-    setSearch("");
-    setFilterType("title");
-    navigate("/");
-  };
+
+  // Debounce search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (search.trim() === "") {
+        navigate("/");
+      } else {
+        navigate(`/?${filterType}=${encodeURIComponent(search)}`);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [search, filterType, navigate]);
 
   return (
     <nav
@@ -61,6 +66,7 @@ const Navbar = () => {
           </button>
         )}
       </div>
+
       {isHome && (
         <div style={{ display: "flex", gap: "10px" }}>
           <select
@@ -79,17 +85,6 @@ const Navbar = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-
-          <button style={{ cursor: "pointer" }} onClick={handleSearch}>
-            Search
-          </button>
-
-          <button
-            style={{ cursor: "pointer", fontSize: "12px", padding: "4px 8px" }}
-            onClick={handleResetFilters}
-          >
-            Reset
-          </button>
         </div>
       )}
     </nav>
