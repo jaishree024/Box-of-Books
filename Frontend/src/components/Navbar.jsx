@@ -21,7 +21,6 @@ const Navbar = () => {
     navigate("/", { replace: true });
   };
 
-  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       if (search.trim() === "") {
